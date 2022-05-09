@@ -195,6 +195,7 @@ window.addEventListener("DOMContentLoaded", () => {
     229,
     ".menu .container"
   ).render();
+  
   new MenuCard(
     "img/tabs/post.jpg",
     "post",
@@ -212,4 +213,5 @@ window.addEventListener("DOMContentLoaded", () => {
     21,
     ".menu .container"
   ).render();
+
 });
