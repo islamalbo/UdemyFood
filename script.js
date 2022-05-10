@@ -173,10 +173,10 @@ window.addEventListener("DOMContentLoaded", () => {
     render() {
       const element = document.createElement("div");
       if (this.classes.length === 0) {
-        this.element = 'menu__item';
+        this.element = "menu__item";
         element.classList.add(this.element);
       } else {
-        this.classes.forEach(className => element.classList.add(className));
+        this.classes.forEach((className) => element.classList.add(className));
       }
       element.innerHTML = `
                     <img src=${this.src} alt=${this.alt}>
@@ -185,7 +185,9 @@ window.addEventListener("DOMContentLoaded", () => {
                     <div class="menu__item-divider"></div>
                     <div class="menu__item-price">
                         <div class="menu__item-cost">Цена:</div>
-                        <div class="menu__item-total"><span>${Math.round(this.price)}</span> руб/день</div>
+                        <div class="menu__item-total"><span>${Math.round(
+                          this.price
+                        )}</span> руб/день</div>
                     </div>
       `;
       this.parent.append(element);
@@ -200,7 +202,7 @@ window.addEventListener("DOMContentLoaded", () => {
     229,
     ".menu .container"
   ).render();
-  
+
   new MenuCard(
     "img/tabs/post.jpg",
     "post",
@@ -219,4 +221,54 @@ window.addEventListener("DOMContentLoaded", () => {
     ".menu .container"
   ).render();
 
+  // отправка форм
+
+
+  const forms = document.querySelectorAll("form");
+  const message = {
+    loading: "Загрузка",
+    success: "Данные успешно отправлены",
+    failure: "Что-то пошло не так...",
+  };
+
+  forms.forEach((item) => {
+    postData(item);
+  });
+
+  function postData(form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let statusMessage = document.createElement("div");
+      statusMessage.classList.add("status");
+      statusMessage.textContent = message.loading;
+      form.appendChild(statusMessage);
+
+      const request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+
+      request.setRequestHeader('Content-type', 'application/json');
+      const formData = new FormData(form);
+
+      const obj = {};
+      formData.forEach(function(value, key) {
+        obj[key] = value;
+      });
+
+      request.send(JSON.stringify(obj));
+
+      request.addEventListener("load", () => {
+        if (request.status === 200) {
+          console.log(request.response);
+          statusMessage.textContent = message.success;
+          form.reset();
+          setTimeout(() => {
+            statusMessage.remove();
+          }, 3000);
+        } else {
+          statusMessage.textContent = message.failure;
+        }
+      });
+    });
+  }
 });
