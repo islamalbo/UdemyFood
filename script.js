@@ -105,7 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const button = document.querySelectorAll("[data-modal]");
   const modal = document.querySelector(".modal");
   const closeButton = document.querySelector("[data-close]");
-  
+
   button.forEach((btn) => {
     btn.addEventListener("click", openModal);
   });
@@ -222,7 +222,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ".menu .container"
   ).render();
 
-
   // отправка форм
 
   const forms = document.querySelectorAll("form");
@@ -247,23 +246,25 @@ window.addEventListener("DOMContentLoaded", () => {
         obj[key] = value;
       });
 
-      fetch ('server.php', {
+      fetch('server.php', {
         method: 'POST',
         headers: {
-          "Content-type": "application/json"
+          'Content-type': 'application/json',
         },
-        body: JSON.stringify(obj)
+        body: JSON.stringify(obj),
       })
-      .then(data => data.text())
-      .then(data => {
-        console.log(data);
-        showThanksModal(message.success);
-        statusMessage.remove();
-      }).catch(() => {
-        showThanksModal(message.failure);
-      }).finally(() => {
-        form.reset();
-      });
+        .then((data) => data.text())
+        .then((data) => {
+          console.log(data);
+          showThanksModal(message.success);
+          statusMessage.remove();
+        })
+        .catch(() => {
+          showThanksModal(message.failure);
+        })
+        .finally(() => {
+          form.reset();
+        });
     });
   }
 
