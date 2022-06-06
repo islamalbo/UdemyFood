@@ -240,8 +240,6 @@ window.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-    loadMessage();
-
       const formData = new FormData(form);
 
       const obj = {};
