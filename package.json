@@ -1,0 +1,22 @@
+{
+  "name": "udemyfood",
+  "version": "1.0.0",
+  "description": "https://islamalbo.github.io/UdemyFood/",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/islamalbo/UdemyFood.git"
+  },
+  "author": "Islam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/islamalbo/UdemyFood/issues"
+  },
+  "homepage": "https://github.com/islamalbo/UdemyFood#readme",
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  }
+}
