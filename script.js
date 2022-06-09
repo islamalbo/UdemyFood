@@ -189,12 +189,18 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  getRecources("http://localhost:3000/menu")
-    .then(data => {
-      data.forEach(({img, altimg, title, descr, price}) => {
-          new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-      });
+  getRecources("http://localhost:3000/menu").then((data) => {
+    data.forEach(({ img, altimg, title, descr, price }) => {
+      new MenuCard(
+        img,
+        altimg,
+        title,
+        descr,
+        price,
+        ".menu .container"
+      ).render();
     });
+  });
 
   // отправка форм
 
@@ -219,16 +225,16 @@ window.addEventListener("DOMContentLoaded", () => {
     });
     return await res.json();
   };
-   
-  async function getRecources (url) {
-    let res = await fetch (url);
+
+  async function getRecources(url) {
+    let res = await fetch(url);
 
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    } 
+    }
 
     return await res.json();
-  };
+  }
 
   function bindPostData(form) {
     form.addEventListener("submit", (e) => {
@@ -282,7 +288,48 @@ window.addEventListener("DOMContentLoaded", () => {
       closeModal();
     }, 4000);
   }
+
+  /// creating slider
+
+  const slides = document.querySelectorAll(".offer__slide");
+  prevButton = document.querySelector(".offer__slider-prev");
+  nextButton = document.querySelector(".offer__slider-next");
+  counterCurrent = document.getElementById("#current");
+  counterTotal = document.getElementById("#total");
+
+  let slideIndex = 1;
+
+  showSlides(slideIndex);
+
+  function showSlides(n) {
+    if (n > slides.length) {
+      slideIndex = 1;
+    }
+
+    if (n < 1) {
+      slideIndex = slides.length;
+    }
+
+    slides.forEach((i) => (i.style.display = "none"));
+
+    slides[slideIndex - 1].style.display = "block";
+
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+
+  function plusSlides(n) {
+    showSlides((slideIndex += n));
+  }
+
+  prevButton.addEventListener("click", () => {
+    plusSlides(-1);
+  });
+
+  nextButton.addEventListener("click", () => {
+    plusSlides(1);
+  });
 });
-
-/// creating slider
-
