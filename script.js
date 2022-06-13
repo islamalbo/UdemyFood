@@ -202,7 +202,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // отправка форм
+
+
+
+  // sending data from forms
+
+
+
+
 
   const forms = document.querySelectorAll("form");
   const message = {
@@ -289,7 +296,15 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 4000);
   }
 
+
+
+
+
   /// creating slider
+
+
+
+
   let slideIndex = 1;
   let offset = 0;
 
@@ -336,7 +351,6 @@ window.addEventListener("DOMContentLoaded", () => {
     if (i == 0) {
       dot.style.opacity = 1;
     }
-
     indicators.append(dot);
     dots.push(dot);
   }
@@ -354,13 +368,22 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  nextButton.addEventListener("click", () => {
-    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+  function replacePx(str) {
+    if (offset == +str.replace(/\D/g, "") * (slides.length - 1)) {
       offset = 0;
     } else {
-      offset += +width.slice(0, width.length - 2);
+      offset += +str.replace(/\D/g, "");
     }
+  }
+
+  function slidesTransform() {
     slidesField.style.transform = `translateX(-${offset}px)`;
+  }
+
+  nextButton.addEventListener("click", () => {
+    replacePx(width);
+
+    slidesTransform();
 
     if (slideIndex == slides.length) {
       slideIndex = 1;
@@ -374,13 +397,9 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   prevButton.addEventListener("click", () => {
-    if (offset == 0) {
-      offset = +width.slice(0, width.length - 2) * (slides.length - 1);
-    } else {
-      offset -= +width.slice(0, width.length - 2);
-    }
+    replacePx(width);
 
-    slidesField.style.transform = `translateX(-${offset}px)`;
+    slidesTransform();
 
     if (slideIndex == 1) {
       slideIndex = slides.length;
@@ -396,15 +415,110 @@ window.addEventListener("DOMContentLoaded", () => {
   dots.forEach((dot) => {
     dot.addEventListener("click", () => {
       const slideTo = e.target.getAttribute("data-slide-to");
-
       slideIndex = slideTo;
-      offset = +width.slice(0, width.length - 2) * (slideTo - 1);
 
-      slidesField.style.transform = `translateX(-${offset}px)`;
+      offset = +width.replace(/\D/g, "") * (slideTo - 1);
+
+      slidesTransform();
 
       fixCountRendering();
 
       changeDotsOpasity();
     });
   });
+
+
+
+
+
+  // conculatung results
+
+
+
+
+
+
+
+
+  const result = document.querySelector(".calculating__result span");
+  let sex = 'female', 
+      height, 
+      weight, 
+      age, 
+      ratio = '1.375';
+
+  function calcTotal() {
+    if (!sex || !height || !weight || !age || !ratio) {
+      result.textContent = "____";
+      return;
+    }
+
+    if (sex === "female") {
+      result.textContent =
+        Math.round((447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio);
+    } else {
+      result.textContent =
+        Math.round((88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio);
+    }
+  }
+   
+  calcTotal();
+
+
+  function getStaticInfo(parentSelector, activeClass) {
+    const elements = document.querySelectorAll(`${parentSelector} div`);
+
+    elements.forEach(elem => {
+      elem.addEventListener('click', (e) => {
+      if (e.target.getAttribute('data-ratio')) {
+        ratio = +e.target.getAttribute('data-ratio');
+      } else {
+        sex = e.target.getAttribute('id');
+      }
+
+      console.log(ratio, sex);
+
+      elements.forEach(elem => {
+        elem.classList.remove(activeClass);
+      });
+
+      e.target.classList.add(activeClass);
+
+      calcTotal();
+    });
+    })
+  }
+
+
+  getStaticInfo("#gender", "calculating__choose-item_active");
+  getStaticInfo(".calculating__choose_big", "calculating__choose-item_active");
+
+
+  function getDynamicInfo(selector) {
+    const input = document.querySelector(selector);
+
+
+    input.addEventListener('input', () => {
+      switch(input.getAttribute('id')) {
+        case 'height':
+          height = +input.value;
+          break;
+        case 'weight':
+          weight = +input.value;
+          break;
+        case 'age':
+          age = +input.value;
+          break;
+      } 
+      
+      calcTotal();
+    });
+
+   
+  }
+
+  getDynamicInfo('#height');
+  getDynamicInfo('#weight');
+  getDynamicInfo('#age');
+
 });
