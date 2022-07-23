@@ -1,18 +1,25 @@
-function slider() {
-  /// creating slider
-
+function slider({
+  container,
+  slide,
+  nextArrow,
+  prevArrow,
+  currentCounter,
+  totalCounter,
+  wrapper,
+  field,
+}) {
   let slideIndex = 1;
   let offset = 0;
 
-  const slides = document.querySelectorAll(".offer__slide"),
-    prevButton = document.querySelector(".offer__slider-prev"),
-    nextButton = document.querySelector(".offer__slider-next"),
-    current = document.getElementById("current"),
-    total = document.getElementById("total"),
-    slidesWrapper = document.querySelector(".offer__slider-wrapper"),
-    slidesField = document.querySelector(".offer_slider-inner"),
-    slider = document.querySelector(".offer__slider");
-  width = window.getComputedStyle(slidesWrapper).width;
+  const slides = document.querySelectorAll(slide),
+    prevButton = document.querySelector(prevArrow),
+    nextButton = document.querySelector(nextArrow),
+    current = document.querySelector(currentCounter),
+    total = document.querySelector(totalCounter),
+    slidesWrapper = document.querySelector(wrapper),
+    slidesField = document.querySelector(field),
+    slider = document.querySelector(container),
+    width = window.getComputedStyle(slidesWrapper).width;
 
   if (slides.length < 10) {
     total.textContent = `0${slides.length}`;
@@ -109,7 +116,7 @@ function slider() {
   });
 
   dots.forEach((dot) => {
-    dot.addEventListener("click", () => {
+    dot.addEventListener("click", (e) => {
       const slideTo = e.target.getAttribute("data-slide-to");
       slideIndex = slideTo;
 
@@ -124,4 +131,4 @@ function slider() {
   });
 }
 
-module.exports = slider;
+export default slider;
